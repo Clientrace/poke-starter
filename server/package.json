@@ -1,0 +1,6 @@
+{
+  "devDependencies": {
+    "serverless-offline-python": "^3.22.3"
+  },
+  "name": "server"
+}

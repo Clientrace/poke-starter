@@ -1,0 +1,14 @@
+
+service: poke-service
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.6
+
+functions:
+  register_user:
+    handler: handler.hello
+
+
+
