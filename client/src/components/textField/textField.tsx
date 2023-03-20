@@ -6,6 +6,7 @@ interface InputProps {
   header: string,
   name: string,
   value: string,
+  maxLength: number,
   onChange: Function,
   placeholder: string,
 }
@@ -18,6 +19,7 @@ const TextField = (props: InputProps): ReactElement => {
       </div>
       <input
         onChange={(e)=>props.onChange(e)}
+        maxLength={props.maxLength}
         name={props.name}
         className={style['input']}
         value={props.value}
