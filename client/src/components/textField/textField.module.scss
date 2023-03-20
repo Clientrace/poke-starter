@@ -1,15 +1,14 @@
 
-
-.input {
-  width: auto;
-  height: 20px;
+.header {
+  margin-bottom: 5px;
+  font-size: 1em;
 }
-
 
 .input {
   width: 100%;
   border: 1px #888 solid;
   font-size: 1.1em;
+  box-sizing: border-box!important;
   padding: 3px;
 }
 
