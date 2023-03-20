@@ -1,7 +1,4 @@
 
-@import './_colors.scss';
-@import './_nav.scss';
-
 
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
 
@@ -10,27 +7,6 @@ body {
   font-family: 'Open Sans'!important;
   padding: 0!important;
   margin: 0!important;
-  background-color: $dark;
-}
-
-h1 {
-  font-size: 3em!important;
-  font-weight: normal!important;
-}
-
-h2 {
-  font-size: 2em!important;
-  letter-spacing: 3px;
-}
-
-h4 {
-  font-size: 1em!important;
-  font-weight: normal;
-}
-
-
-h5 {
-  font-size: 0.8em!important;
 }
 
 

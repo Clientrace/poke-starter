@@ -5,14 +5,18 @@ import GeneralLayout from '../layouts/generalLayout'
 import TextField from '../components/textField/textField';
 import Button from '../components/button/button';
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 
 
 const Home: NextPage = () => {
   const [username, setUsername] = useState("");
+  const [formLoading, setFormLoading] = useState(false);
+  const router = useRouter();
 
   // Login user & create db record
   const login = (): void => {
-    console.log(username);
+    setFormLoading(true);
+    router.push(`/${username}/select`)
   }
 
   return (
@@ -31,6 +35,7 @@ const Home: NextPage = () => {
             <div className={style['username']}>
               <TextField
                 name="username"
+                maxLength={255}
                 value={username}
                 onChange={(e: { target: HTMLInputElement}) : void=>{
                   setUsername(e.target.value);
@@ -39,7 +44,10 @@ const Home: NextPage = () => {
                 placeholder="Alakazam"/>
             </div>
             <div className={style['action']}>
-              <Button title="Login" onClick={():void=>login()}/>
+              <Button
+                loading={formLoading}
+                disabled={username.length===0}
+                title="Login" onClick={():void=>login()}/>
             </div>
           </div>
         </div>
