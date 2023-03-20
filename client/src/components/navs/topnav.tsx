@@ -5,7 +5,10 @@ import style from './topnav.module.scss'
 const TopNav = () : ReactElement => {
   return (
     <div className={style['container']}>
-      Poke Starter
+      <div className={style['brand']}>
+        <img src="/pokeball.svg"/>
+        Poke Starter
+      </div>
     </div>
   )
 }
