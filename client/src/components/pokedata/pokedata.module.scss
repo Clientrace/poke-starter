@@ -1,0 +1,45 @@
+
+.container {
+  width: 300px;
+  height: 400px;
+  padding: 15px;
+  border: 1px solid #dedede;
+	box-shadow: 0 4px 6px 0px #ccc;
+  .poke-sprite {
+    width: 100%;
+    height: 200px;
+    text-align: center;
+    align-items: center;
+    img {
+      width: auto;
+      height: 230px;
+    }
+ }
+ .info {
+  .poke-num {
+    font-size: 0.9em;
+    color: #444;
+  }
+  .flavor-text {
+    margin-top: 10px;
+    font-size: 0.8em;
+  }
+  .basic-data {
+    margin-top: 10px;
+    .label {
+      font-size: 0.8em;
+      color: #666;
+      margin-right: 5px;
+    }
+  }
+ }
+}
+
+.type-badge {
+  display: table;
+  color: white;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 10px;
+}
+
