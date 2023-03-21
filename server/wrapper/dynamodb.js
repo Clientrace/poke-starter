@@ -2,7 +2,7 @@
 
 var AWS = require('aws-sdk');
 
-class Dynamodb {
+class DynamoDB {
 
   constructor(tableName, region){
     this.tableName = tableName
@@ -19,14 +19,25 @@ class Dynamodb {
     }
   }
 
-  putItem = (itemObj) => {
-    this.dynamodb.putItem({
+  putItem = async (itemObj) => {
+    const resp = await this.dynamodb.putItem({
       TableName: this.tableName,
       Item: itemObj
-    })
+    }).promise();
+    return resp;
+  }
+
+  getItem = async (key) => {
+    const resp = await this.dynamodb.getItem({
+      TableName: this.tableName,
+      Key: key,
+      ReturnConsumedCapacity: 'TOTAL'
+    }).promise();
+
+    return resp;
   }
 
 }
 
-export default Dynamodb;
+exports.DynamoDB = DynamoDB;
 

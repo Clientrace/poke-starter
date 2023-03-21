@@ -1,19 +1,27 @@
 
-import Dynamodb from "../wrapper/dynamodb";
-import User from "../models/user";
+
+var db = require('../wrapper/dynamodb');
+var user = require('../models/user');
 
 class DynamoDBRepo {
   constructor(tableName){
-    this.db = new Dynamodb(tableName, 'ap-southeast-1');
+    this.tableName = tableName;
+    this.db = new db.DynamoDB(tableName, 'ap-southeast-1');
   }
 
   registerUser = (username) => {
-    const user = User(username, '', '');
-    this.db.putItem(user);
+    const userObj = user(username, '', '');
+    this.db.putItem(userObj);
+  }
+
+  getUser = (username) => {
+    this.db.getItem({
+      'username': { 'S': username }
+    })
   }
 
 }
 
+exports.DynamoDBRepo = DynamoDBRepo;
 
 
-export default DynamoDBRepo;
