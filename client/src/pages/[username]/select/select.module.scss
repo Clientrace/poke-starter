@@ -23,3 +23,49 @@
 }
 
 
+.confirmation {
+  position: absolute;
+  width: 700px;
+  height: 500px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border: 1px solid #dedede;
+	box-shadow: 0 4px 6px 0px #ccc;
+  padding: 25px;
+  .content {
+    text-align: center;
+    .header {
+      width: 100%;
+      font-size: 1.2em;
+      font-weight: bolder;
+    }
+    .subheader {
+      font-size: 1em;
+    }
+    .pokesprite {
+      height: 300px;
+      img {
+        height: 280px;
+      }
+    }
+    .form {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .inputs {
+        width: 300px;
+        .confirm{
+          margin-top: 10px;
+        }
+        .cancel {
+          margin-top: 5px;
+        }
+      }
+    }
+
+  }
+}
+

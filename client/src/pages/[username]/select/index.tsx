@@ -5,15 +5,12 @@ import PokeData from "../../../components/pokedata/pokedata";
 import style from './select.module.scss';
 import { ReactElement, useEffect, useState } from "react";
 import PokeService from "../../../service/pokeService";
-
-const Confirmation = () : ReactElement => {
-  return <div>
-
-  </div>
-}
+import Button from "../../../components/button/button";
+import TextField from "../../../components/textField/textField";
+import { motion } from "framer-motion";
 
 
-interface Props {
+interface PageProps {
   username?:string
 }
 
@@ -27,9 +24,50 @@ interface PokeStarter {
   flavorText: string
 }
 
-const Select: NextPage<Props> = (props) => {
+interface ConfirmationProps {
+  pokemon: PokeStarter,
+  cancelCallback: Function,
+}
+
+const Confirmation = (props: ConfirmationProps) : ReactElement => {
+  return <div className={style['confirmation']}>
+    <div className={style['content']}>
+      <div className={style['header']}>
+        Confirm your selection
+      </div>
+      <div className={style['subheader']}>
+        Are you sure you want to select <i>{props.pokemon.name}</i> as your starter?
+      </div>
+      <div className={style['pokesprite']}>
+        <motion.img
+            animate={{scale: [1,1.2,1]}}
+            transition={{duration: 4, repeat: Infinity}}
+            src={props.pokemon.sprite}/>
+      </div>
+      <div className={style['form']}>
+        <div className={style['inputs']}>
+          <TextField name="pokemonNickname"
+              header="Enter Nickname"
+              value={props.pokemon.name}
+              maxLength={25}
+              placeholder={props.pokemon.name}
+              onChange={()=>{}}/>
+          <div className={style['confirm']}>
+            <Button title="Confirm" onClick={()=>{}}/>
+          </div>
+          <div className={style['cancel']}>
+            <Button title="Cancel" type="cancel" onClick={()=>props.cancelCallback()}/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+}
+
+const Select: NextPage<PageProps> = (props) => {
 
   const [starterSelection, setStarterSelection] = useState([]);
+  const [starterPick, setStarterPick] = useState<PokeStarter|undefined>(undefined);
   const service = new PokeService();
   
   useEffect(()=>{
@@ -52,15 +90,20 @@ const Select: NextPage<Props> = (props) => {
   const renderPokeStarers = () => {
     return <>
       {
-        starterSelection.map((data:PokeStarter)=>{
-          return <PokeData
-                    name={data.name}
-                    type={data.type}
-                    imageSrc={data.sprite}
-                    number={'#'+data.id}
-                    flavorText={data.flavorText}
-                    weight={data.weight}
-                    height={data.height}/>
+        starterSelection.map((data:PokeStarter, idx: number)=>{
+          return <motion.a
+                    onClick={()=>setStarterPick(data)}
+                    initial={{opacity: 0}}
+                    animate={{scale: [0.8,1.2,1], opacity: 1}}
+                    transition={{duration: 0.3, delay: idx/3}}>
+                    <PokeData
+                      name={data.name}
+                      type={data.type}
+                      imageSrc={data.sprite}
+                      number={'#'+data.id}
+                      flavorText={data.flavorText}
+                      weight={data.weight}
+                      height={data.height}/></motion.a>
         })
       }
     </>
@@ -83,7 +126,9 @@ const Select: NextPage<Props> = (props) => {
         </div>
       </div>
       <div>
-
+        { starterPick && 
+            <Confirmation
+                pokemon={starterPick} cancelCallback={()=>setStarterPick(undefined)}/> }
       </div>
     </GeneralLayout>
   )
@@ -96,7 +141,7 @@ interface SelectContext extends NextPageContext {
   }
 }
 
-Select.getInitialProps = async (ctx: SelectContext): Promise<Props> => {
+Select.getInitialProps = async (ctx: SelectContext): Promise<PageProps> => {
   return {
     username: ctx.query.username,
   }
