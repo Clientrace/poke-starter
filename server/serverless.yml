@@ -1,14 +1,70 @@
 
-service: poke-service
+service: poke-starter-service
 frameworkVersion: '3'
 
 provider:
   name: aws
-  runtime: python3.6
+  runtime: nodejs12.x
+  stage: ${opt:stage, 'dev'}
+  region: ap-southeast-1
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Scan
+        - dynamodb:Query
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+        - dynamodb:DescribeTable
+
+      Resource:
+        - Fn::Join: ['', [Fn::GetAtt: [ cmsTable, Arn ], '/*'] ]
+        - Fn::Join: ['', [Fn::GetAtt: [ cmsTable, Arn ]] ]
+  
+  environment:
+    STAGE: ${self:provider.stage}
+    local_endpoint: 'http://localhost:8000'
+
+custom:
+  serverless-offline:
+    httpPort: 5000
+
+  dynamodb:
+    stages:
+      - dev
+    start:
+      port: 8000
 
 functions:
-  register_user:
+  registerUser:
     handler: handler.hello
+    events:
+      - http:
+          path: user/register
+          method: post
+          cors: true
 
+resources:
+  Resources:
+    usersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: usersTable
+        AttributeDefinitions:
+          - AttributeName: username
+            AttributeType: S
 
+        KeySchema:
+          - AttributeName: username
+            KetType: HASH
+
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+plugins:
+  - serverless-dynamodb-local
+  - serverless-offline
 
