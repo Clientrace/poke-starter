@@ -1,17 +1,18 @@
-'use strict';
+'user strict'
 
-const dbRepo = require('../db/dynamodb.js');
+const pokeApi = require('../wrapper/pokeApi');
 const requestValidator = require('../helpr/validateRequest.js');
 
 const requestFormat = {
-  pathParams: {},
+  pathParams: {
+    'nameId': 'string'
+  },
   queryParams: {},
-  requestBody: {
-    username: 'string'
-  }
-}
+  requestBody: {}
+};
 
 module.exports.execute = async (event) => {
+
   var reqObj = {};
   try{
     reqObj = requestValidator.validateRequest(event, requestFormat);
@@ -23,14 +24,16 @@ module.exports.execute = async (event) => {
     }
   }
 
-  const repo = new dbRepo.DynamoDBRepo('usersTable');
-  repo.registerUser(reqObj.requestBody['username']);
-
+  // get starter pokemon info
+  const api = new pokeApi.PokeAPI();
+  const pokeInfo = await api.getPokemon(reqObj.pathParams['nameId']);
+  
   return {
     statusCode: 200,
-    body: JSON.stringify({
-      'message': 'user successfully registered'
-    }, null, 2)
+    body: JSON.stringify(pokeInfo, null, 2)
   }
 }
+
+
+
 

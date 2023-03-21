@@ -14,11 +14,13 @@ class PokeAPI{
     const specieURL = pokeInfo.species.url;
     const specieInfo = await fetch(specieURL)
       .then((resp) => resp.json());
-    const zeroPad = (num, places) => String(num).padStart(places, '0')
 
+    const zeroPad = (num, places) => String(num).padStart(places, '0')
     return {
       name: nameId,
+      type: pokeInfo.types[0].type.name,
       id: zeroPad(pokeInfo.id, 4),
+      sprite: pokeInfo.sprites.front_default,
       height: pokeInfo.height,
       weight: pokeInfo.weight,
       flavorText: specieInfo.flavor_text_entries[0].flavor_text

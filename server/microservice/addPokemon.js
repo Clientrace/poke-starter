@@ -1,10 +1,10 @@
 'user strict'
 
 
-var dbRepo = require('../db/dynamodb.js');
-var requestValidator = require('../helpr/validateRequest.js');
+const dbRepo = require('../db/dynamodb.js');
+const requestValidator = require('../helpr/validateRequest.js');
 
-var requestFormat = {
+const requestFormat = {
   queryParams: {},
   pathParams: {
     'username': 'string'

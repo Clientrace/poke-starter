@@ -1,14 +1,15 @@
 'use strict';
 
+
 const dbRepo = require('../db/dynamodb.js');
 const requestValidator = require('../helpr/validateRequest.js');
 
 const requestFormat = {
-  pathParams: {},
   queryParams: {},
-  requestBody: {
-    username: 'string'
-  }
+  pathParams: {
+    'username': 'string'
+  },
+  requestBody: {}
 }
 
 module.exports.execute = async (event) => {
@@ -24,13 +25,15 @@ module.exports.execute = async (event) => {
   }
 
   const repo = new dbRepo.DynamoDBRepo('usersTable');
-  repo.registerUser(reqObj.requestBody['username']);
-
+  const resp = await repo.getUser(reqObj.pathParams['username']);
+  const respObject = {
+    'username': resp.Item.username.S,
+    'pokemonId': resp.Item.pokemonId.S,
+    'pokemonNickname': resp.Item.pokemonNickname.S,
+  }
   return {
     statusCode: 200,
-    body: JSON.stringify({
-      'message': 'user successfully registered'
-    }, null, 2)
+    body: JSON.stringify(respObject, null, 2)
   }
-}
 
+}
