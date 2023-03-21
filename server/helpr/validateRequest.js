@@ -1,7 +1,14 @@
 
 
 
-const validateRequest = (requestObj, requestFormat) => {
+const validateRequest = (event, requestFormat) => {
+
+  // Extract request object
+  var requestObj = {
+    pathParams: event.pathParameters || {},
+    queryParams: event.queryParameters || {},
+    requestBody: JSON.parse(event.body) || {}
+  }
 
   // validate path parameters
   Object.keys(requestFormat.pathParams).map(key=>{
