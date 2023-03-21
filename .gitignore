@@ -4,6 +4,7 @@
 client/node_modules
 client/.next
 server/node_modules
+server/.dynamodb
 /.pnp
 .pnp.js
 
