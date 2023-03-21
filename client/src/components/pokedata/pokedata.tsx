@@ -1,6 +1,7 @@
 
-import { ReactElement, ReactNode } from "react";
+import { ReactElement, ReactNode, useState } from "react";
 import style from './pokedata.module.scss';
+import { motion } from 'framer-motion';
 
 
 interface TypeBadgeProps {
@@ -38,7 +39,13 @@ interface PokedataProps {
 }
 
 const PokeData = (props: PokedataProps) : ReactElement => {
-  return <div className={style['container']}>
+  const [selected, setSelected] = useState(false);
+  return <motion.div
+    initial={{opacity: 0.8}}
+    whileHover={{scale: 1.1, opacity: 1}}
+    onHoverStart={()=>setSelected(true)}
+    onHoverEnd={()=>setSelected(false)}
+    className={style['container']}>
     <div className={style['poke-sprite']}>
       <img src={props.imageSrc}/>
     </div>
@@ -59,7 +66,16 @@ const PokeData = (props: PokedataProps) : ReactElement => {
         {props.weight}
       </div>
     </div>
-  </div>
+    {selected && <div className={style['cursor']}>
+      <motion.img
+        initial={{opacity: 0, scale: 0.2}}
+        animate={{opacity: 1, scale: 1}}
+        src="/pokeball.svg"/> 
+      <div className={style['cursor-text']}>
+        Click to choose
+      </div>
+    </div>}
+  </motion.div>
 }
 
 export default PokeData;

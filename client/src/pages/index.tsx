@@ -6,16 +6,26 @@ import TextField from '../components/textField/textField';
 import Button from '../components/button/button';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import { motion } from 'framer-motion';
+import PokeService from '../service/pokeService';
 
 
 const Home: NextPage = () => {
   const [username, setUsername] = useState("");
   const [formLoading, setFormLoading] = useState(false);
   const router = useRouter();
+  const service = new PokeService();
+  const animationProps = {
+    initial: {opacity: 0, scale: 1.1},
+    animate: {opacity: 1, scale: 1},
+  };
 
   // Login user & create db record
-  const login = (): void => {
+  const login = async (): Promise<void> => {
     setFormLoading(true);
+    const resp = await service.registerUser(username);
+    console.log(resp);
+    setFormLoading(false);
     router.push(`/${username}/select`)
   }
 
@@ -23,14 +33,28 @@ const Home: NextPage = () => {
     <GeneralLayout>
       <div className={style['container']}>
         <div className={style['welcome']}>
-          <div className={style['header']}>
+          <motion.img
+            initial={{opacity: 0.6, scale: 0.8}}
+            animate={{opacity: 1, scale: [1.3, 1]}}
+            transition={{duration: 0.4}}
+            src="/banner.png" className={style['banner']}/>
+          <motion.div
+            {...animationProps}
+            transition={{delay: 0.2}}
+            className={style['header']}>
             Welcome to Poké Starter!
-          </div>
-          <div className={style['subheader']}>
+          </motion.div>
+          <motion.div
+            {...animationProps}
+            transition={{delay: 0.4}}
+            className={style['subheader']}>
             Begin your own Pokémon Adventure
-          </div>
+          </motion.div>
         </div>
-        <div className={style['form']}>
+        <motion.div
+          {...animationProps}
+          transition={{delay: 0.6}}
+          className={style['form']}>
           <div className={style['fields']}>
             <div className={style['username']}>
               <TextField
@@ -50,7 +74,7 @@ const Home: NextPage = () => {
                 title="Login" onClick={():void=>login()}/>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </GeneralLayout>
   )
