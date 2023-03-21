@@ -16,7 +16,7 @@ provider:
         - dynamodb:GetItem
         - dynamodb:PutItem
         - dynamodb:UpdateItem
-        - dynamodb:DeleteItem
+        - dynamodb:DeleteItee
         - dynamodb:DescribeTable
 
       Resource:
@@ -26,10 +26,11 @@ provider:
   environment:
     STAGE: ${self:provider.stage}
     local_endpoint: 'http://localhost:8000'
+    starter_pokemons: charmander,bulbasaur,squirtle
 
 custom:
   serverless-offline:
-    httpPort: 5000
+    httpPort: 4000
 
   dynamodb:
     stages:
@@ -39,11 +40,43 @@ custom:
 
 functions:
   registerUser:
-    handler: handler.hello
+    handler: microservice/registerUser.execute
     events:
       - http:
           path: user/register
           method: post
+          cors: true
+
+  getUser:
+    handler: microservice/getUser.execute
+    events:
+      - http:
+          path: user/info/{username}
+          method: get
+          cors: true
+
+  addPokemon:
+    handler: microservice/addPokemon.execute
+    events:
+      - http:
+          path: user/info/{username}
+          method: post
+          cors: true
+
+  getStarterPokemon:
+    handler: microservice/getStarterPokemons.execute
+    events:
+      - http:
+          path: pokemon/starters
+          method: get
+          cors: true
+
+  getPokemon:
+    handler: microservice/getPokemon.execute
+    events:
+      - http:
+          path: pokemon/info/{nameId}
+          method: get
           cors: true
 
 resources:
@@ -58,7 +91,7 @@ resources:
 
         KeySchema:
           - AttributeName: username
-            KetType: HASH
+            KeyType: HASH
 
         ProvisionedThroughput:
           ReadCapacityUnits: 1
