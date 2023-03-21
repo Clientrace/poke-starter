@@ -14,14 +14,28 @@ class DynamoDBRepo {
     this.db.putItem(userObj);
   }
 
-  getUser = (username) => {
-    this.db.getItem({
+  getUser = async (username) => {
+    const resp = await this.db.getItem({
       'username': { 'S': username }
     })
+    return resp;
+  }
+
+  addPokemon = (username, pokemonId, pokemonNickname) => {
+    const resp = this.db.updateItem({
+      'username': {'S': username}
+    },{
+      'pokemonId': { 'Value': {'S': pokemonId }},
+      'pokemonNickname': {'Value': {'S': pokemonNickname}}
+    });
+    return resp
   }
 
 }
 
 exports.DynamoDBRepo = DynamoDBRepo;
+
+
+
 
 

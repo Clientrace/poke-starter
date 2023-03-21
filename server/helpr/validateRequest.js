@@ -43,6 +43,7 @@ const validateRequest = (event, requestFormat) => {
     }
   });
 
+  return requestObj;
 }
 
 module.exports.validateRequest = validateRequest;

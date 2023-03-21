@@ -33,7 +33,15 @@ class DynamoDB {
       Key: key,
       ReturnConsumedCapacity: 'TOTAL'
     }).promise();
+    return resp;
+  }
 
+  updateItem = async (key, attribUpdates) => {
+    const resp = await this.dynamodb.updateItem({
+      TableName: this.tableName,
+      Key: key,
+      AttributeUpdates: attribUpdates
+    }).promise()
     return resp;
   }
 
