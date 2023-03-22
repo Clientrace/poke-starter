@@ -24,6 +24,20 @@ class PokeService extends Service {
     return resp;
   }
 
+  addPokemon = async (username: string, pokemonNameId: string,
+    pokemonNickname: string) => {
+    const resp = await this.post(`/user/info/${username}`, {}, {
+      'pokemonId': pokemonNameId,
+      'pokemonNickname': pokemonNickname
+    });
+    return resp;
+  }
+
+  getPokemon = async (nameId: string) => {
+    const resp = await this.get(`/pokemon/info/${nameId}`, {});
+    return resp;
+  }
+
 }
 
 export default PokeService;

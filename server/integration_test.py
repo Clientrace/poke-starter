@@ -11,7 +11,7 @@ def register_user():
   print(resp)
 
 def get_user():
-  url = 'http://localhost:4000/dev/user/info/clarence143'
+  url = 'http://localhost:4000/dev/user/info/clarence143333dd'
   resp = requests.get(url)
   print(resp.json())
 
@@ -37,6 +37,6 @@ def get_pokemon():
   print(resp.json())
 
 
-get_pokemon()
+get_user()
 
 

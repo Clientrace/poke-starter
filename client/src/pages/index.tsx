@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
 import PokeService from '../service/pokeService';
+import UserInfo from '../interfaces/userInfo';
 
 
 const Home: NextPage = () => {
@@ -20,13 +21,32 @@ const Home: NextPage = () => {
     animate: {opacity: 1, scale: 1},
   };
 
+  const getUser = async (username: string): Promise<UserInfo> => {
+    const resp = await service.getUser(username);
+    return resp.data;
+  }
+
   // Login user & create db record
   const login = async (): Promise<void> => {
     setFormLoading(true);
-    const resp = await service.registerUser(username);
-    console.log(resp);
-    setFormLoading(false);
-    router.push(`/${username}/select`)
+    var userResp: UserInfo = {
+      username: "",
+      pokemonId: "",
+      pokemonNickname: ""
+    };
+    try {
+      userResp = await getUser(username);
+    } catch(err){
+      // Register user if not found
+      await service.registerUser(username);
+      router.push(`/${username}/select`)
+    }
+
+    if(userResp.pokemonId === ""){
+      router.push(`/${username}/select`)
+    } else {
+      router.push(`/${username}/profile`)
+    }
   }
 
   return (
@@ -71,7 +91,7 @@ const Home: NextPage = () => {
               <Button
                 loading={formLoading}
                 disabled={username.length===0}
-                title="Login" onClick={():void=>login()}/>
+                title="Login" onClick={():Promise<void>=>login()}/>
             </div>
           </div>
         </motion.div>

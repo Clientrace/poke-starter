@@ -8,28 +8,23 @@ import PokeService from "../../../service/pokeService";
 import Button from "../../../components/button/button";
 import TextField from "../../../components/textField/textField";
 import { motion } from "framer-motion";
-
+import { useRouter } from "next/router";
+import PokeInfo from "../../../interfaces/pokeinfo";
 
 interface PageProps {
-  username?:string
-}
-
-interface PokeStarter {
-  id: string,
-  type: string,
-  sprite: string,
-  name: string,
-  weight: number,
-  height: number,
-  flavorText: string
+  username:string
 }
 
 interface ConfirmationProps {
-  pokemon: PokeStarter,
+  pokemon: PokeInfo,
   cancelCallback: Function,
+  pokemonName: string,
+  nameCallback: Function,
+  selectPokemonCallback: Function
 }
 
 const Confirmation = (props: ConfirmationProps) : ReactElement => {
+  const [loading, setLoading] = useState(false);
   return <div className={style['confirmation']}>
     <div className={style['content']}>
       <div className={style['header']}>
@@ -48,12 +43,19 @@ const Confirmation = (props: ConfirmationProps) : ReactElement => {
         <div className={style['inputs']}>
           <TextField name="pokemonNickname"
               header="Enter Nickname"
-              value={props.pokemon.name}
+              value={props.pokemonName}
               maxLength={25}
               placeholder={props.pokemon.name}
-              onChange={()=>{}}/>
+              onChange={(e: { target: HTMLInputElement}) : void=>{
+                props.nameCallback(e.target.value);
+              }}/>
           <div className={style['confirm']}>
-            <Button title="Confirm" onClick={()=>{}}/>
+            <Button title="Confirm"
+                loading={loading}
+                onClick={()=>{
+                  setLoading(true);
+                  props.selectPokemonCallback();
+                }}/>
           </div>
           <div className={style['cancel']}>
             <Button title="Cancel" type="cancel" onClick={()=>props.cancelCallback()}/>
@@ -67,18 +69,22 @@ const Confirmation = (props: ConfirmationProps) : ReactElement => {
 const Select: NextPage<PageProps> = (props) => {
 
   const [starterSelection, setStarterSelection] = useState([]);
-  const [starterPick, setStarterPick] = useState<PokeStarter|undefined>(undefined);
+  const [starterNickname, setStarterNickname] = useState("");
+  const [starterPick, setStarterPick] = useState<PokeInfo|undefined>(undefined);
+  const router = useRouter();
   const service = new PokeService();
   
   useEffect(()=>{
-    // getUser();
-
     getStarterPokemons();
   }, []);
 
-  const getUser = async () => {
-    const user = await service.getUser(props.username);
-    console.log(user);
+  const selectStarterPokemon = async () => {
+    const resp = await service.addPokemon(
+      props.username,
+      starterPick?.name || "",
+      starterNickname,
+    );
+    router.push(`/${props.username}/profile`);
   }
 
   const getStarterPokemons = async () => {
@@ -90,9 +96,12 @@ const Select: NextPage<PageProps> = (props) => {
   const renderPokeStarers = () => {
     return <>
       {
-        starterSelection.map((data:PokeStarter, idx: number)=>{
+        starterSelection.map((data:PokeInfo, idx: number)=>{
           return <motion.a
-                    onClick={()=>setStarterPick(data)}
+                    onClick={()=>{
+                      setStarterPick(data);
+                      setStarterNickname(data.name);
+                    }}
                     initial={{opacity: 0}}
                     animate={{scale: [0.8,1.2,1], opacity: 1}}
                     transition={{duration: 0.3, delay: idx/3}}>
@@ -124,13 +133,26 @@ const Select: NextPage<PageProps> = (props) => {
         <div className={style['starters']}>
           { renderPokeStarers() }
         </div>
+        <motion.div
+          initial={{opacity: 0}}
+          animate={{opacity: 1}}
+          transition={{delay: 0.5}}
+          className={style['actions']}>
+          <div className={style['logout']}>
+            <Button title="Logout" onClick={()=>router.push('/')}/>
+          </div>
+        </motion.div>
       </div>
       <div>
         { starterPick && 
             <Confirmation
-                pokemon={starterPick} cancelCallback={()=>setStarterPick(undefined)}/> }
+                pokemonName={starterNickname}
+                pokemon={starterPick}
+                nameCallback={setStarterNickname}
+                selectPokemonCallback={()=>selectStarterPokemon()}
+                cancelCallback={()=>setStarterPick(undefined)}/> }
       </div>
-    </GeneralLayout>
+   </GeneralLayout>
   )
 }
 

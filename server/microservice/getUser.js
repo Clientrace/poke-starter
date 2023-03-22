@@ -26,6 +26,12 @@ module.exports.execute = async (event) => {
 
   const repo = new dbRepo.DynamoDBRepo('usersTable');
   const resp = await repo.getUser(reqObj.pathParams['username']);
+  if(!('Item' in resp)){
+    return {
+      statusCode: 404,
+      body: JSON.stringify({'message': 'user not found'}, null, 2)
+    }
+  }
   const respObject = {
     'username': resp.Item.username.S,
     'pokemonId': resp.Item.pokemonId.S,
