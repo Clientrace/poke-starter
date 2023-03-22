@@ -38,11 +38,17 @@ tar zxvf dynamodb_local_latest.tar.gz -C .dynamodb
 * Look for the .env.local in the client root directory, this will contain the env vars for the server host url. Make sure it's on the app client folder path.
 * Open http://localhost:3000 on chrome and check the web application.
 
+### Test(s)
+* Run integration test if the API is working by using the **integration_test.py** python file.
+```python3 integration_test.py```
+
 
 ### Possible Improvements
 * Add more pokemon types badge color in client/src/components/pokedata.tsx
 * Create a seperate model for pokemon if ever the number of pokemon that the user will grow.
 * Utilize the pokeapi to add more pokemon data.
+* Add loading animation while fetching the API data.
+* Catch server timeout from pokeapi for multiple api calls and display it on the frontend.
 
 
 ### Production/Deployment Plans
