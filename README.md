@@ -10,7 +10,7 @@ ___
 ### Prerequsites
 * aws cli (https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
 * npm (https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
-* nodejs (https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+* nodejs (version 18+) (https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 * serverless framework (https://www.serverless.com/framework/docs/getting-started)
 ```npm install -g serverless```
 * python (optional for running integration test) (https://www.python.org/downloads/)
