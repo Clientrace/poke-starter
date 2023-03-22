@@ -1,5 +1,4 @@
 ## Poke Starter
-___
 
 Poke-starter demonstrates an interactive pokemon experience. The user can create a profile, login and choose the starter pokemon. This project showcases my full stack development knowledge.
 
@@ -7,6 +6,7 @@ Poke-starter demonstrates an interactive pokemon experience. The user can create
 The project utilizes NextJS (ReactJS typescript) for the frontend client, serverless nodejs for the backend, and AWS DynamoDB for the database. I also used a bit of python for integration test.
 
 ### Setup
+___
 ### Prerequsites
 * npm (https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 * nodejs (https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
@@ -40,6 +40,29 @@ tar zxvf dynamodb_local_latest.tar.gz -C .dynamodb
 
 
 ### Possible Improvements
+* Add more pokemon types badge color in client/src/components/pokedata.tsx
+* Create a seperate model for pokemon if ever the number of pokemon that the user will grow.
+* Utilize the pokeapi to add more pokemon data.
+
+
+### Production/Deployment Plans
+* Point the server to prod by updating the server serverless yml file. Setup AWS credentials. ```serverless deploy --stage prod```. This will setup the dynamodb resource, api gateway and lambda functions.
+* Deploy the frontend to vercel or setup serverless deployment folder with this blueprint:
+```
+app:
+  component: "@sls-next/serverless-component@3.5.3-alpha.4"
+  inputs:
+    nextConfigDir: "../../"
+    bucketName: poke-starter-bucket
+    bucketRegion: ap-southeast-1
+    cors:
+      - enabled: true
+    build:
+      env:
+        STAGE: prod
+```
+* Create a deployment folder and create a serverless yml with the content above.
+* Deploy the frontend by running ```serverless``` inside the deployment server.
 
 
 
