@@ -8,12 +8,17 @@ The project utilizes NextJS (ReactJS typescript) for the frontend client, server
 ### Setup
 ___
 ### Prerequsites
+* aws cli (https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
 * npm (https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 * nodejs (https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 * serverless framework (https://www.serverless.com/framework/docs/getting-started)
-```npm install serverless```
+```npm install -g serverless```
 * python (optional for running integration test) (https://www.python.org/downloads/)
 * JRE for dynamodb local
+* Configure aws cli locally (just put random keys if you don't have an AWS account):
+```
+aws configure
+```
 
 ### Server Setup
 * Under the server folder, install the required server dependencies by running:
