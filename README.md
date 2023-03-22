@@ -29,7 +29,7 @@ wget http://dynamodb-local.s3-website-us-west-2.amazonaws.com/dynamodb_local_lat
 mkdir .dynamodb
 tar zxvf dynamodb_local_latest.tar.gz -C .dynamodb
 ```
-* Run the dynamodb app server by running ```serverless start --migrate``` inside the server folder.
+* Run the dynamodb app server by running ```serverless dynamodb start --migrate``` inside the server folder.
 * Run the API server by running ```serverless offline``` inside the server folder
 * Make sure the API server runs on the correct port (4000) that matches the host url in .env.local in the client's root folder.
 
