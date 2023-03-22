@@ -70,6 +70,10 @@ app:
 * Create a deployment folder and create a serverless yml with the content above.
 * Deploy the frontend by running ```serverless``` inside the deployment server.
 
+### Others
+___
+#### Updating the default starter pokemons
+* Open the ***serverless.yml** under server and upate the field starter_pokemons under environment variables.
 
 
 
